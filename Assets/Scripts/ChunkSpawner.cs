@@ -44,7 +44,7 @@ public class ChunkSpawner : MonoBehaviour
 
         if (chase)
         {
-            chaseObject.position += new Vector3(0,chaseSpeed,0) * Time.deltaTime;
+            //chaseObject.position += new Vector3(0,chaseSpeed,0) * Time.deltaTime;
             chaseSpeed *= 1.001f;
 
             if(chaseObject.position.y-5 > player.position.y)
