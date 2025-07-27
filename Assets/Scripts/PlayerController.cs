@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using RDG;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform tounge;
     private Transform shadow;
 
-    [SerializeField] private FloatingJoystick floatingJoystick;
+    [SerializeField] private DynamicJoystick floatingJoystick;
     [SerializeField] private CustomButton abilityButton;
     [SerializeField] private GameObject tracer;
     private Transform tracerTransform;
@@ -280,15 +281,19 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
+        Vibration.VibratePredefined(0);
+
         var dir = mouseDirection.normalized;
         rb.velocity -= dir * grappelForce / 2;
     }
     public void Hooked()
     {
+        Vibration.VibratePredefined(2);
         hooked = true;
     }
     public void UnHooked()
     {
+        Vibration.VibratePredefined(0);
         var dir = mouseDirection.normalized;
         rb.velocity += dir * grappelForce * 2;
         hooked = false;
@@ -298,7 +303,12 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.tag == "Harmful")
         {
+            Vibration.VibratePredefined(1);
             ChangeHP(-1);
+        }
+        else
+        {
+            Vibration.VibratePredefined(0);
         }
 
         //triggers audio, particle and tween effect
@@ -338,7 +348,8 @@ public class PlayerController : MonoBehaviour
 
     public void GameOver()
     {
-        enabled = false;
+        gameObject.SetActive(false);
+        //enabled = false;
     }
 
     //set character stats and abilities from character shop

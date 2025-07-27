@@ -1,68 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Audio;
 using System;
+using UnityEngine.SceneManagement;
 
-[System.Serializable]
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public Sound[] musicSounds, sfxSounds;
-    public AudioSource musicSource, sfxSource;
+    [SerializeField] private AudioMixer audioMixer;
 
-    private void Awake()
+    public Sound[] musicSounds;
+    public AudioSource musicSource;
+
+    public bool musicToggled = false;
+
+    private void Start()
     {
-        if(Instance == null)
+        DontDestroyOnLoad(gameObject);
+
+        musicToggled = PlayerPrefs.GetInt("musicToggled", 1) == 1;
+    }
+
+    public void ToggleMusic()
+    {
+        musicToggled = !musicToggled;
+        PlayerPrefs.SetInt("musicToggled", musicToggled ? 1 : 0);
+
+        if(musicToggled )
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            audioMixer.SetFloat("MusicVolume", 0);    
         }
         else
         {
-            Destroy(gameObject);
+            audioMixer.SetFloat("MusicVolume", -80);
         }
-
-        PLayMusic("MainMenu");
-    }
-
-    public void PLayMusic(string name)
-    {
-        Sound s = Array.Find(musicSounds, x => x.name == name);
-
-        if(s == null)
-        {
-            Debug.Log("SoundNotFound");
-        }
-        else
-        {
-            musicSource.clip = s.clip;
-            musicSource.Play();
-        }
-    }
-
-
-    public void PlaySFX(string name)
-    {
-        Sound s = Array.Find(sfxSounds, x => x.name == name);
-
-        if (s == null)
-        {
-            Debug.Log("SoundNotFound");
-        }
-        else
-        {
-            sfxSource.PlayOneShot(s.clip);
-        }
-    }
-
-    public void MusicVolume(float volume)
-    {
-        musicSource.volume = volume;
-    }
-
-    public void SFXVolume(float volume)
-    {
-        sfxSource.volume = volume;
     }
 }

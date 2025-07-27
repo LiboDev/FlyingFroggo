@@ -44,12 +44,11 @@ public class ChunkSpawner : MonoBehaviour
 
         if (chase)
         {
-            //chaseObject.position += new Vector3(0,chaseSpeed,0) * Time.deltaTime;
-            chaseSpeed *= 1.001f;
+            chaseObject.position += new Vector3(0,chaseSpeed,0) * Time.deltaTime;
 
             if(chaseObject.position.y-5 > player.position.y)
             {
-                player.gameObject.GetComponent<PlayerController>().GameOver();
+                //player.gameObject.GetComponent<PlayerController>().GameOver();
             }
         }
     }
