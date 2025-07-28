@@ -10,7 +10,7 @@ public class GrappleController : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Transform tracerTransform;
     [SerializeField] private DynamicJoystick floatingJoystick;
-    [SerializeField] private CustomButton shootButton;
+    [SerializeField] private ButtonHeld shootButton;
 
     //object
     private LineRenderer lineRenderer;

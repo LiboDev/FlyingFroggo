@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private Transform shadow;
 
     [SerializeField] private DynamicJoystick floatingJoystick;
-    [SerializeField] private CustomButton abilityButton;
+    [SerializeField] private ButtonHeld abilityButton;
     [SerializeField] private GameObject tracer;
     private Transform tracerTransform;
     [SerializeField] private RectTransform hearts;
@@ -281,19 +281,19 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
-        Vibration.VibratePredefined(0);
+        //Vibration.VibratePredefined(0);
 
         var dir = mouseDirection.normalized;
         rb.velocity -= dir * grappelForce / 2;
     }
     public void Hooked()
     {
-        Vibration.VibratePredefined(2);
+        Vibration.VibratePredefined(0);
         hooked = true;
     }
     public void UnHooked()
     {
-        Vibration.VibratePredefined(0);
+        //Vibration.VibratePredefined(0);
         var dir = mouseDirection.normalized;
         rb.velocity += dir * grappelForce * 2;
         hooked = false;
@@ -303,7 +303,7 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.tag == "Harmful")
         {
-            Vibration.VibratePredefined(1);
+            Vibration.VibratePredefined(2);
             ChangeHP(-1);
         }
         else

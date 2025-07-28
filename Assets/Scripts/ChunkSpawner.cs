@@ -6,7 +6,7 @@ using TMPro;
 
 public class ChunkSpawner : MonoBehaviour
 {
-    private int score = -300;
+    private int score = -400;
 
     [SerializeField] private Transform player;
 

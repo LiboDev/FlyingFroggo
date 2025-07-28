@@ -16,6 +16,12 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene(biomeScroller.closestButtonIndex + 1);
     }
 
+    public void Home()
+    {
+        Unpause();
+        SceneManager.LoadScene(0);
+    }
+
     public void Quit()
     {
         Application.Quit();
