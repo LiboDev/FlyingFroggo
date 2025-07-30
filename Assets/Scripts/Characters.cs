@@ -8,7 +8,7 @@ public class Characters
     public string name;
 
     public Sprite characterSprite;
-    public Sprite toungeSprite;
+    //public Sprite toungeSprite;
 
     public int health;
 

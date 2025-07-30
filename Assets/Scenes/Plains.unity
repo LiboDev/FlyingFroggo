@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1287359523}
   m_Lens:
     FieldOfView: 34
-    OrthographicSize: 16.92188
+    OrthographicSize: 19.025
     NearClipPlane: 0.3
     FarClipPlane: 2000
     Dutch: 0
@@ -5736,7 +5736,7 @@ Camera:
   far clip plane: 2000
   field of view: 34
   orthographic: 1
-  orthographic size: 16.92188
+  orthographic size: 19.025
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6051,7 +6051,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 3.2, y: 0}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &784391552
@@ -6565,7 +6565,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6622,10 +6622,10 @@ MonoBehaviour:
   grappelForce: 5
   maxHealth: 10
   abilityCooldown: 10
-  canFart: 1
+  canFart: 0
   canHeal: 0
   canShield: 0
-  canTeleport: 0
+  canTeleport: 1
 --- !u!212 &1287359522
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7500,8 +7500,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -7529,6 +7529,7 @@ GameObject:
   - component: {fileID: 2034873662}
   - component: {fileID: 2034873665}
   - component: {fileID: 2034873663}
+  - component: {fileID: 2034873666}
   m_Layer: 5
   m_Name: abilityButton
   m_TagString: Untagged
@@ -7579,6 +7580,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2034873661}
   m_CullTransparentMesh: 0
+--- !u!114 &2034873666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034873661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2098166472
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,32 +17,25 @@ public class CharacterLoader : MonoBehaviour
     //presets
     [SerializeField] private List<Characters> characters;
 
-    //inventory
-    private int coins;
-
     [SerializeField] private List<int> unlockedCharacters = new List<int>();
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-
-        //load unlocked characters
-
-        string num = PlayerPrefs.GetString("UnlockedCharacters", "0");
-
-        Debug.Log("unlocked character string:" + num);
-
-        for (int i = 0; i < num.Length; i++)
-        {
-            unlockedCharacters.Add(num[i] - '0');
-
-            Debug.Log("unlocked character index:" + num[i]);
-        }
-
         //add items to scrollable list
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
-            for(int i = 0; i < unlockedCharacters.Count; i++)
+            DontDestroyOnLoad(gameObject);
+
+            //load unlocked characters
+
+            string num = PlayerPrefs.GetString("UnlockedCharacters", "01234567");
+
+            for (int i = 0; i < num.Length; i++)
+            {
+                unlockedCharacters.Add(num[i] - '0');
+            }
+
+            for (int i = 0; i < unlockedCharacters.Count; i++)
             {
                 GameObject obj = Instantiate(characterListObjectPrefab, transform.position, Quaternion.identity);
                 obj.GetComponent<Image>().sprite = characters[unlockedCharacters[i]].characterSprite;
@@ -51,20 +44,24 @@ public class CharacterLoader : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        if(SceneManager.GetActiveScene().buildIndex != 0)
+        SceneManager.activeSceneChanged += OnActiveSceneChanged;
+    }
+
+    private void OnActiveSceneChanged(Scene current, Scene next)
+    {
+        if(next.buildIndex != 0)
         {
             PlayerController player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-            player.SetCharacter(characters[selectedCharacterIndex]);
-            Debug.Log(selectedCharacterIndex);
+            player.SetCharacter(characters[unlockedCharacters[selectedCharacterIndex]]);
+            Debug.Log("set character:" + unlockedCharacters[selectedCharacterIndex]);
         }
     }
 
     public void UpdateIndex()
     {
         selectedCharacterIndex = characterScroller.closestButtonIndex;
-        Debug.Log(selectedCharacterIndex);
+        Debug.Log("closest index:" + selectedCharacterIndex);
     }
 }

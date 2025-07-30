@@ -65,7 +65,15 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("Abilities", 0.1f);
+        if(abilityCooldown > 0)
+        {
+            Invoke("Abilities", 0.1f);
+        }
+        else
+        {
+            abilityButton.gameObject.SetActive(false);
+            slider.gameObject.SetActive(false);
+        }
     }
 
     void Abilities()
@@ -365,6 +373,8 @@ public class PlayerController : MonoBehaviour
 
         canFart = character.canFart;
         canHeal = character.canHeal;
+        canShield = character.canShield;
+        canTeleport = character.canTeleport;
 
         rb.gravityScale = character.gravityScale;
 
