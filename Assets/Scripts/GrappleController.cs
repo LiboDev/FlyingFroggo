@@ -17,8 +17,8 @@ public class GrappleController : MonoBehaviour
     private Rigidbody2D rb;
 
     //stats
-    [SerializeField] private float speed;
     [SerializeField] private float range;
+    [SerializeField] private float speed;
 
     //tracking
     private Vector2 mousePos;
@@ -35,7 +35,8 @@ public class GrappleController : MonoBehaviour
 
         rb.velocity = Vector2.zero;
 
-        tracerTransform.localScale = new Vector3(1, range + 1, 1);
+        range = playerController.range;
+        tracerTransform.localScale = new Vector3(0.5f, range + 1, 1);
         tracerTransform.position = new Vector3(0, range / 2, 0);
     }
 
@@ -79,6 +80,8 @@ public class GrappleController : MonoBehaviour
     private void Reload()
     {
         canShoot = true;
+
+        PlaySound.instance.PlaySFX("FrogGulp", 1f, 0.05f);
     }
 
     private void Shoot()
@@ -147,7 +150,7 @@ public class GrappleController : MonoBehaviour
             returning = false;
         }
 
-        if(other.gameObject.tag == "Ungrappleable" && !returning)
+        if(other.gameObject.tag == "Ungrappleable" && !returning && transform.parent == null)
         {
             StartCoroutine(Return());
         }

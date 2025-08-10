@@ -6,7 +6,7 @@ using TMPro;
 
 public class ChunkSpawner : MonoBehaviour
 {
-    private int score = -400;
+    private int score = 0;
 
     [SerializeField] private Transform player;
 
@@ -22,15 +22,25 @@ public class ChunkSpawner : MonoBehaviour
     private float chunkPos = 10;
 
     [SerializeField] private bool chase;
-    [SerializeField] private float chaseSpeed;
+    [SerializeField] private float chaseSpeedMultiplier;
+    private float chaseTime = 0;
     [SerializeField] private Transform chaseObject;
 
     [SerializeField] private Text scoreText;
 
+    [SerializeField] private GameObject HUD;
+    [SerializeField] private GameObject gameOverMenu;
+    [SerializeField] private TextMeshProUGUI finalScore;
+
     // Start is called before the first frame update
     void Start()
     {
-        SpawnChunk();
+        ChangeScore(0);
+
+        for(int i = 0; i < 5; i++)
+        {
+            SpawnChunk();
+        }
     }
 
     // Update is called once per frame
@@ -39,16 +49,23 @@ public class ChunkSpawner : MonoBehaviour
         if (player.position.y > chunkPos - 50)
         {
             SpawnChunk();
-            ChangeScore(100);
+            ChangeScore(1);
         }
 
         if (chase)
         {
-            chaseObject.position += new Vector3(0,chaseSpeed,0) * Time.deltaTime;
+            chaseTime += Time.deltaTime;
+            float speed = Mathf.Log(chaseTime + 1) * chaseSpeedMultiplier; //log(x+10)*5
 
-            if(chaseObject.position.y-5 > player.position.y)
+            chaseObject.position += new Vector3(0,speed,0) * Time.deltaTime;
+
+            if(chaseObject.position.y + 15f > player.position.y)
             {
-                //player.gameObject.GetComponent<PlayerController>().GameOver();
+                player.gameObject.GetComponent<PlayerController>().GameOver();
+            }
+            else if (chaseObject.position.y < chunkList[20].transform.position.y)
+            {
+                chaseObject.position += Vector3.up * 10;
             }
         }
     }
@@ -111,5 +128,19 @@ public class ChunkSpawner : MonoBehaviour
     {
         score += add;
         scoreText.text = score.ToString();
+    }
+
+    public void GameOver()
+    {
+        int money = PlayerPrefs.GetInt("Money",0);
+        money += score;
+        PlayerPrefs.SetInt("Money", money);
+
+        HUD.SetActive(false);
+        gameOverMenu.SetActive(true);
+
+        finalScore.text = "+" + score;
+
+        enabled = false;
     }
 }

@@ -6,12 +6,16 @@ using UnityEngine;
 public class Characters
 {
     public string name;
+    public string description;
+
+    public int cost;
 
     public Sprite characterSprite;
     //public Sprite toungeSprite;
 
     public int health;
 
+    public float range;
     public float grappelForce;
 
     public float abilityCooldown;

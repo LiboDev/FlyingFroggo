@@ -28,7 +28,7 @@ public class ObjectEffects : MonoBehaviour
 
         if(audio != null)
         {
-            //AudioManager.Instance.PlaySFX(audio);
+            PlaySound.instance.PlaySFX(audio, 1f, 0.01f);
         }
     }
 }

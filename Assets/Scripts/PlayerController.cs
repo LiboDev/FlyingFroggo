@@ -20,13 +20,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private RectTransform hearts;
     [SerializeField] private Slider slider;
 
+    [SerializeField] private ChunkSpawner chunkSpawner;
+
+    [SerializeField] private GameObject fartParticles;
+    [SerializeField] private GameObject teleportParticles;
+    [SerializeField] private GameObject shieldObject;
+
+    [SerializeField] private GameObject dummy;
+
+
     //object
     private Rigidbody2D rb;
+    private Transform spriteTransform;
     private SpriteRenderer spriteRenderer;
+    private Animation spriteAnimation;
 
     [SerializeField] private List<Sprite> sprites;
 
     //stats
+    public float range = 10f;
     [SerializeField] private float grappelForce;
 
     [SerializeField] private int maxHealth;
@@ -37,6 +49,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool canHeal = false;
     [SerializeField] private bool canShield = false;
     [SerializeField] private bool canTeleport = false;
+
+    
 
     //tracking
     private Vector2 playerPos;
@@ -55,7 +69,10 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        spriteTransform = transform.GetChild(3);
+        spriteRenderer = spriteTransform.GetComponent<SpriteRenderer>();
+        spriteAnimation = spriteTransform.GetComponent<Animation>();
 
         shadow = transform.Find("Shadow");
 
@@ -161,6 +178,10 @@ public class PlayerController : MonoBehaviour
         {
             if (abilityButton.held && hooked == false)
             {
+                PlaySound.instance.PlaySFX("Fart", 1f, 0.05f);
+
+                Instantiate(fartParticles, transform.position, transform.rotation);
+
                 var dir = mouseDirection.normalized;
                 rb.velocity += dir * 20;
 
@@ -180,17 +201,27 @@ public class PlayerController : MonoBehaviour
         {
             if (abilityButton.held && invincible == false)
             {
-                invincible= true;
-                invincibilityTimer += 5f;
+                PlaySound.instance.PlaySFX("Shield", 1f, 0.05f);
 
-                var dir = mouseDirection.normalized;
-                rb.velocity += dir * 20;
+                GameObject shield = Instantiate(shieldObject, transform.position, Quaternion.identity);
+                shield.transform.SetParent(spriteTransform);
+
+                StartCoroutine(DestroyObject(shield, 5f));
+
+                invincible = true;
+                invincibilityTimer += 5f;
 
                 StartCoroutine(AbilityCooldown());
                 yield return new WaitForSeconds(abilityCooldown);
             }
             yield return null;
         }
+    }
+
+    private IEnumerator DestroyObject(GameObject obj, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Destroy(obj);
     }
 
     //heal hp overtime
@@ -221,7 +252,11 @@ public class PlayerController : MonoBehaviour
         {
             if (abilityButton.held && hooked == false)
             {
-                Vector3 dir = mouseDirection.normalized * 5;
+                PlaySound.instance.PlaySFX("Teleport", 1f, 0.05f);
+
+                Instantiate(teleportParticles, transform.position, transform.rotation);
+
+                Vector3 dir = mouseDirection.normalized * 10;
                 Vector2 newPos = transform.position + dir;
 
                 if(newPos.x < -9)
@@ -233,6 +268,9 @@ public class PlayerController : MonoBehaviour
                     newPos -= new Vector2(newPos.x-9, 0);
                 }
                 transform.position = newPos;
+
+
+                Instantiate(teleportParticles, transform.position, transform.rotation);
 
                 StartCoroutine(AbilityCooldown());
                 yield return new WaitForSeconds(abilityCooldown);
@@ -255,6 +293,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                PlaySound.instance.PlaySFX("AbilityRefresh", 1f, 0.05f);
+
                 slider.value = 1;
                 break;
             }
@@ -293,11 +333,16 @@ public class PlayerController : MonoBehaviour
 
         var dir = mouseDirection.normalized;
         rb.velocity -= dir * grappelForce / 2;
+
+        PlaySound.instance.PlaySFX("Shoot", 1f, 0.05f);
     }
     public void Hooked()
     {
+        spriteAnimation.Play();
         Vibration.VibratePredefined(0);
         hooked = true;
+
+        PlaySound.instance.PlaySFX("TongueHit", 1f, 0.05f);
     }
     public void UnHooked()
     {
@@ -305,18 +350,29 @@ public class PlayerController : MonoBehaviour
         var dir = mouseDirection.normalized;
         rb.velocity += dir * grappelForce * 2;
         hooked = false;
+
+        PlaySound.instance.PlaySFX("HookRelease", 1f, 0.05f);
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        //spriteTransform.GetComponent<Animation>().Stop();
+        spriteAnimation.Play();
+
         if(other.gameObject.tag == "Harmful")
         {
             Vibration.VibratePredefined(2);
-            ChangeHP(-1);
+            GameOver();
+
+            //ChangeHP(-1);
+
+            PlaySound.instance.PlaySFX("DamageTaken", 1f, 0.01f);
         }
         else
         {
             Vibration.VibratePredefined(0);
+
+            PlaySound.instance.PlaySFX("FrogHit", 1f, 0.01f);
         }
 
         //triggers audio, particle and tween effect
@@ -356,8 +412,20 @@ public class PlayerController : MonoBehaviour
 
     public void GameOver()
     {
+        PlaySound.instance.PlaySFX("GameOver", 1f);
+
+        chunkSpawner.GameOver();
+
+        GameObject dummyObject = Instantiate(dummy, transform.position, transform.rotation);
+        dummyObject.GetComponent<SpriteRenderer>().sprite = spriteRenderer.sprite;
+        Rigidbody2D rb = dummyObject.GetComponent<Rigidbody2D>();
+
+        rb.AddForce(new Vector2(Random.Range(-5f, 5f), 5f));
+        rb.AddTorque(Random.Range(-5f, 5f));
+
+        tracer.SetActive(false);
+
         gameObject.SetActive(false);
-        //enabled = false;
     }
 
     //set character stats and abilities from character shop
@@ -368,6 +436,7 @@ public class PlayerController : MonoBehaviour
         health = character.health;
 
         grappelForce = character.grappelForce;
+        range = character.range;
 
         abilityCooldown = character.abilityCooldown;
 

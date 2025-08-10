@@ -27,10 +27,14 @@ public class Menu : MonoBehaviour
         Application.Quit();
     }
 
+    public void Reload()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
     void Start()
     {
-
+        //PlayerPrefs.SetString("UnlockedCharacters", "01");
     }
 
     public void Pause()

@@ -28,6 +28,7 @@ public class UnlockedBiomesLoader : MonoBehaviour
             unlockedBiomes.Add(num[i] - '0');
         }
 
+        unlockedBiomes.Sort();
 
         //add items to scrollable list
         if (SceneManager.GetActiveScene().buildIndex == 0)
