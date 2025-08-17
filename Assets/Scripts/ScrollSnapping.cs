@@ -101,10 +101,13 @@ public class ScrollSnapping : MonoBehaviour
 
         if(previousButtonIndex != closestButtonIndex)
         {
+            previousButtonIndex = closestButtonIndex;
             changeIndex.Invoke();
         }
-
-        previousButtonIndex = closestButtonIndex;
+        else
+        {
+            previousButtonIndex = closestButtonIndex;
+        }
     }
 
     private void OnIndexChange()

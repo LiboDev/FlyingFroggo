@@ -90,7 +90,7 @@ public class CharacterShop : MonoBehaviour
 
             PlayerPrefs.SetInt("Money", money);
 
-            characterListObject.GetChild(index).GetComponent<Image>().color = new Color(0.25f, 0.25f, 0.25f, 1);
+            characterListObject.GetChild(index).GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
             lockedCharacters.Remove(index);
 
             moneyDisplayer.UpdateMoney();

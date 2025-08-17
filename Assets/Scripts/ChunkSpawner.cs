@@ -63,10 +63,21 @@ public class ChunkSpawner : MonoBehaviour
             {
                 player.gameObject.GetComponent<PlayerController>().GameOver();
             }
-            else if (chaseObject.position.y < chunkList[20].transform.position.y)
+        }
+    }
+
+    private IEnumerator BoostChase()
+    {
+        yield return new WaitForSeconds(10f);
+
+        while (true)
+        {
+            if (chaseObject.position.y < chunkList[10].transform.position.y)
             {
                 chaseObject.position += Vector3.up * 10;
             }
+
+            yield return null;
         }
     }
 
