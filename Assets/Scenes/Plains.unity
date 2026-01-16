@@ -1773,6 +1773,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6655901635643416919, guid: 562b2333197a0d54d9d122873957f809, type: 3}
+      propertyPath: ShapeModule.m_Position.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655901635643416919, guid: 562b2333197a0d54d9d122873957f809, type: 3}
+      propertyPath: ShapeModule.m_Position.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655901635643416919, guid: 562b2333197a0d54d9d122873957f809, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7790241830022074332, guid: 562b2333197a0d54d9d122873957f809, type: 3}
       propertyPath: m_Name
       value: CharacterCarrier
